@@ -1,0 +1,28 @@
+       <!DOCTYPE html>
+       <html lang="en">
+       <head>
+           <meta charset="UTF-8">
+           <title>Anime Sommelier Aiko</title>
+           <style>
+               body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; background: #f4f4f4; }
+               input, select, button { width: 100%; padding: 10px; margin-bottom: 1em; border-radius: 5px; border: 1px solid #ccc; }
+               button { background: #333; color: white; cursor: pointer; }
+           </style>
+       </head>
+       <body>
+           <h1>Anime Sommelier Aiko</h1>
+           <p>Tell me your taste, and I shall find the perfect vintage.</p>
+           <form action="/recommend" method="post">
+               <input type="text" name="love1" placeholder="Anime you love #1" required>
+               <input type="text" name="love2" placeholder="Anime you love #2" required>
+               <input type="text" name="love3" placeholder="Anime you love #3" required>
+               <input type="text" name="hate" placeholder="Anime you hate" required>
+               <select name="recency" required>
+                   <option value="Recent Vintages (Last 4 Years)">Recent Vintages (Last 4 Years)</option>
+                   <option value="Modern Classics (5-15 Years Old)">Modern Classics (5-15 Years Old)</option>
+                   <option value="Cellar-Aged Classics (15+ Years Old)">Cellar-Aged Classics (15+ Years Old)</option>
+                   <option value="Sommelier's Carte Blanche" selected>Sommelier's Carte Blanche</option>
+               </select>
+               <button type="submit">Find My Perfect Anime</button>    </form>
+       </body>
+       </html>

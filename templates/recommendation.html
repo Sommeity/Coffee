@@ -1,0 +1,16 @@
+       <!DOCTYPE html>
+       <html lang="en">
+       <head>
+           <meta charset="UTF-8">
+           <title>Your Recommendation</title>
+           <style>
+               body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; background: #f4f4f4; }
+               .result { white-space: pre-wrap; background: white; padding: 1em; border-radius: 5px; border: 1px solid #ccc; }
+           </style>
+       </head>
+       <body>
+           <h1>Aiko Recommends:</h1>
+           <div class="result">{{ result | safe }}</div>
+           <a href="/">Try another?</a>
+       </body>
+       </html>

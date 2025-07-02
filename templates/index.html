@@ -3,14 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Anime Sommelier Aiko</title>
-    <style>
-        body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; background: #f4f4f4; }
-        input, select, button { width: 100%; padding: 10px; margin-bottom: 1em; border-radius: 5px; border: 1px solid #ccc; }
-        button { background: #333; color: white; cursor: pointer; }
-        label { display: block; margin-bottom: 0.5em; } /* Added for better checkbox spacing */
-        .option-group { margin-bottom: 1em; padding: 1em; border: 1px solid #ddd; border-radius: 5px; background: #fff; }
-        .option-group p { margin-top: 0; }
-    </style>
+    <!-- In templates/index.html, replace the old <style> block with this one -->
+<style>
+    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; background: #f4f4f4; }
+    
+    /* General style for most inputs */
+    input[type="text"], select, button { 
+        width: 100%; 
+        padding: 10px; 
+        margin-bottom: 1em; 
+        border-radius: 5px; 
+        border: 1px solid #ccc; 
+        box-sizing: border-box; /* Important for consistent sizing */
+    }
+
+    button { background: #333; color: white; cursor: pointer; }
+    
+    .option-group { margin-bottom: 1em; padding: 1em; border: 1px solid #ddd; border-radius: 5px; background: #fff; }
+    .option-group p { margin-top: 0; }
+
+    /* --- FIX FOR CHECKBOXES --- */
+    label {
+        display: flex;         /* Use flexbox for alignment */
+        align-items: center;   /* Vertically align items in the middle */
+        margin-bottom: 0.8em;  /* Add space between each checkbox line */
+    }
+
+    input[type="checkbox"] {
+        width: auto;           /* Let checkbox have its natural width */
+        margin: 0 10px 0 0;  /* Remove bottom margin and add space to the right */
+    }
+</style>
 </head>
 <body>
     <h1>Anime Sommelier Aiko</h1>

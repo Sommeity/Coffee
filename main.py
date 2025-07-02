@@ -2,6 +2,7 @@ import os
 import google.generativeai as genai
 from flask import Flask, render_template, request
 from datetime import datetime
+import markdown
 
 app = Flask(__name__)
 
@@ -111,8 +112,13 @@ def recommend():
     generation_config = genai.types.GenerationConfig(temperature=0.7)
     response = chat.send_message(user_input, generation_config=generation_config)
     
+    # ---New: convert markdown to html---
+    raw_text_from_ai = response.text
+    #...and convert its Markdown formatting into proper HTML.
+    html_result = markdown.markdown(raw_text_from_ai)
+
     # Pass the formatted text result to the recommendation page
-    return render_template('recommendation.html', result=response.text)
+    return render_template('recommendation.html', result=html_result)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

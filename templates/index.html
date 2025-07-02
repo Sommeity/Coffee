@@ -1,28 +1,68 @@
-       <!DOCTYPE html>
-       <html lang="en">
-       <head>
-           <meta charset="UTF-8">
-           <title>Anime Sommelier Aiko</title>
-           <style>
-               body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; background: #f4f4f4; }
-               input, select, button { width: 100%; padding: 10px; margin-bottom: 1em; border-radius: 5px; border: 1px solid #ccc; }
-               button { background: #333; color: white; cursor: pointer; }
-           </style>
-       </head>
-       <body>
-           <h1>Anime Sommelier Aiko</h1>
-           <p>Tell me your taste, and I shall find the perfect vintage.</p>
-           <form action="/recommend" method="post">
-               <input type="text" name="love1" placeholder="Anime you love #1" required>
-               <input type="text" name="love2" placeholder="Anime you love #2" required>
-               <input type="text" name="love3" placeholder="Anime you love #3" required>
-               <input type="text" name="hate" placeholder="Anime you hate" required>
-               <select name="recency" required>
-                   <option value="Recent Vintages (Last 4 Years)">Recent Vintages (Last 4 Years)</option>
-                   <option value="Modern Classics (5-15 Years Old)">Modern Classics (5-15 Years Old)</option>
-                   <option value="Cellar-Aged Classics (15+ Years Old)">Cellar-Aged Classics (15+ Years Old)</option>
-                   <option value="Sommelier's Carte Blanche" selected>Sommelier's Carte Blanche</option>
-               </select>
-               <button type="submit">Find My Perfect Anime</button>    </form>
-       </body>
-       </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anime Sommelier Aiko</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; background: #f4f4f4; }
+        input, select, button { width: 100%; padding: 10px; margin-bottom: 1em; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #333; color: white; cursor: pointer; }
+        label { display: block; margin-bottom: 0.5em; } /* Added for better checkbox spacing */
+        .option-group { margin-bottom: 1em; padding: 1em; border: 1px solid #ddd; border-radius: 5px; background: #fff; }
+        .option-group p { margin-top: 0; }
+    </style>
+</head>
+<body>
+    <h1>Anime Sommelier Aiko</h1>
+    <p>Tell me your taste, and I shall find the perfect vintage.</p>
+    
+    <form action="/recommend" method="post">
+        <!-- Kept your original inputs for taste -->
+        <div class="option-group">
+            <p><strong>First, your core taste:</strong></p>
+            <input type="text" name="love1" placeholder="Anime you love #1" required>
+            <input type="text" name="love2" placeholder="Anime you love #2" required>
+            <input type="text" name="love3" placeholder="Anime you love #3" required>
+            <input type="text" name="hate" placeholder="Anime you hate" required>
+        </div>
+
+        <!-- NEW: Future-proof, dynamic recency dropdown -->
+        <div class="option-group">
+            <p><strong>Select a recency preference:</strong></p>
+            <select name="recency" required>
+                <option value="{{ recency.recent }}">{{ recency.recent }}</option>
+                <option value="{{ recency.modern }}">{{ recency.modern }}</option>
+                <option value="{{ recency.classic }}">{{ recency.classic }}</option>
+                <option value="{{ recency.carte_blanche }}" selected>{{ recency.carte_blanche }}</option>
+            </select>
+        </div>
+
+        <!-- NEW: Emotional targeting sections -->
+        <div class="option-group">
+            <p><strong>What emotion are you chasing?</strong> (Optional)</p>
+            <label><input type="checkbox" name="emotions" value="make me laugh"> Makes me laugh</label>
+            <label><input type="checkbox" name="emotions" value="make me cry"> Makes me cry</label>
+            <label><input type="checkbox" name="emotions" value="make me think"> Makes me think</label>
+            <label><input type="checkbox" name="emotions" value="thrill me"> Thrills & Suspense</label>
+            <label><input type="checkbox" name="emotions" value="feel cozy or wholesome"> Cozy & Wholesome</label>
+        </div>
+        
+        <div class="option-group">
+            <p><strong>Are there any emotions you want to avoid?</strong> (Optional)</p>
+            <label><input type="checkbox" name="avoid_emotions" value="make me cry"> Avoid Tears</label>
+            <label><input type="checkbox" name="avoid_emotions" value="thrill me"> Avoid Thrills & Suspense</label>
+            <label><input type="checkbox" name="avoid_emotions" value="make me think"> Avoid Complexity</label>
+            <!-- You can add more as needed -->
+        </div>
+
+        <!-- NEW: Output customization options -->
+        <div class="option-group">
+            <p><strong>Finally, how would you like your recommendation?</strong></p>
+            <label><input type="checkbox" name="show_analysis" value="yes"> Include Aiko's analysis of my taste</label>
+            <label><input type="checkbox" name="hide_profile" value="yes"> Hide Emotional Profile (Keep it a surprise)</label>
+        </div>
+        
+        <button type="submit">Find My Perfect Anime</button>
+    </form>
+</body>
+</html>

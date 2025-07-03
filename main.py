@@ -6,8 +6,8 @@ import markdown
 
 app = Flask(__name__)
 
-# --- The Aiko V3.4 Prompt is now fully integrated into the code ---
-AIKO_PROMPT_V3_4 = """
+# The Aiko prompt has been updated to V3.5 to reflect the change.
+AIKO_PROMPT_V3_5 = """
 You are an expert Anime Sommelier named 'Aiko'. Your knowledge is vast, but your taste is refined.
 
 **USER PREFERENCES:**
@@ -34,19 +34,20 @@ You MUST format your response using this exact structure.
 **(CONDITIONAL BLOCK 1) ---**
 -   **If `Show Analysis` is 'Yes', you MUST include this section first:**
 **Your Taste Profile:**
-[A compelling, insightful paragraph analyzing the user's taste. Reference their loved and hated shows to deduce their underlying preferences, such as a love for complex narratives, unique art styles, or sharp dialogue, and a dislike for common tropes, pacing issues, etc.]
+[A compelling, insightful paragraph analyzing the user's taste. Reference their loved and hated shows to deduce their underlying preferences.]
 
 -   **If `Show Analysis` is 'No', you MUST OMIT the entire 'Your Taste Profile' section.**
 ---
 
 **Title:** [The Name of the Anime] ([Year of Release])
 
-**Why You'll Love It:** [A compelling paragraph explaining why this specific anime is the perfect match. If the user specified an emotion to avoid, subtly reassure them here that your recommendation respects this.]
+**Why You'll Love It:** [A compelling paragraph explaining why this specific anime is the perfect match.]
 
 ---
 **(CONDITIONAL BLOCK 2) ---**
 -   **If `Hide Profile` is 'No', you MUST include the following section:**
 **Emotional Profile:**
+*Aiko's breakdown of the primary emotions this anime evokes.*
 - **[Emotion Name]:** [XX]%
 - **[Secondary Emotion Name]:** [XX]%
 
@@ -58,7 +59,6 @@ You MUST format your response using this exact structure.
 
 @app.route('/')
 def index():
-    # --- DYNAMICALLY CREATE RECENTY LABELS ---
     current_year = datetime.now().year
     recency_options = {
         'recent': f'Last 5 Years ({current_year - 4}-{current_year})',
@@ -70,7 +70,6 @@ def index():
 
 @app.route('/recommend', methods=['POST'])
 def recommend():
-    # --- Collect all form data ---
     love1 = request.form['love1']
     love2 = request.form['love2']
     love3 = request.form['love3']
@@ -78,14 +77,10 @@ def recommend():
     recency = request.form['recency']
     emotions = request.form.getlist('emotions')
     avoid_emotions = request.form.getlist('avoid_emotions')
-    
     hide_profile = 'Yes' if 'hide_profile' in request.form else 'No'
     show_analysis = 'Yes' if 'show_analysis' in request.form else 'No'
-
     emotions_text = ", ".join(emotions) if emotions else "None specified"
     avoid_emotions_text = ", ".join(avoid_emotions) if avoid_emotions else "None specified"
-
-    # --- Construct the most comprehensive input yet ---
     user_input = (
         f"Loved Anime: {love1}, {love2}, {love3}. "
         f"Hated Anime: {hate}. "
@@ -95,29 +90,19 @@ def recommend():
         f"Hide Profile: {hide_profile}. "
         f"Show Analysis: {show_analysis}."
     )
-    
-    # --- Configure and Call the API ---
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         return "Error: API Key is not configured correctly on the server.", 500
-
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-2.0-flash") 
-    
     chat = model.start_chat(history=[
-        {'role': 'user', 'parts': [AIKO_PROMPT_V3_4]}, # <-- Uses the full prompt above
+        # I've updated the prompt variable name used here
+        {'role': 'user', 'parts': [AIKO_PROMPT_V3_5]},
         {'role': 'model', 'parts': ["OK, I am Aiko. I am ready."]}
     ])
-
     generation_config = genai.types.GenerationConfig(temperature=0.7)
     response = chat.send_message(user_input, generation_config=generation_config)
-    
-    # ---New: convert markdown to html---
-    raw_text_from_ai = response.text
-    #...and convert its Markdown formatting into proper HTML.
-    html_result = markdown.markdown(raw_text_from_ai)
-
-    # Pass the formatted text result to the recommendation page
+    html_result = markdown.markdown(response.text)
     return render_template('recommendation.html', result=html_result)
 
 if __name__ == '__main__':
